@@ -14,13 +14,17 @@ class QdrantContentStore:
     def __init__(
         self,
         collection_name: str = "content",
-        host: str = "localhost",
+        host: Optional[str] = "localhost",
         port: int = 6333,
+        location: Optional[str] = None,
         embedding_model: str = "all-MiniLM-L6-v2",
         vector_size: int = 384,
     ):
         self.collection_name = collection_name
-        self.client = QdrantClient(host=host, port=port)
+        if location:
+            self.client = QdrantClient(location=location)
+        else:
+            self.client = QdrantClient(host=host, port=port)
         self.model = SentenceTransformer(embedding_model)
 
         self._ensure_collection(vector_size)
@@ -104,11 +108,11 @@ class QdrantContentStore:
         """
         vector = self.model.encode(query).tolist()
 
-        results = self.client.search(
+        results = self.client.query_points(
             collection_name=self.collection_name,
-            query_vector=vector,
+            query=vector,
             limit=limit,
-        )
+        ).points
 
         return [
             {

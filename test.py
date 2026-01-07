@@ -3,7 +3,8 @@ from qdrant import QdrantContentStore
 
 def run_tests():
     print("🚀 Initializing QdrantContentStore...")
-    store = QdrantContentStore(collection_name="test_content")
+    # Use in-memory storage for testing to avoid connection errors
+    store = QdrantContentStore(collection_name="test_content", location=":memory:")
 
     print("\n✅ Test 1: Insert without semantic chunking")
     store.add(
