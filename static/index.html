@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Qdrant Data</title>
+</head>
+<body>
+    <h1>Upload Excel File</h1>
+    <form action="/upload-excel" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" accept=".xlsx,.xls" required>
+        <button type="submit">Upload</button>
+    </form>
+
+    <h1>Stored Documents</h1>
+    <button onclick="loadData()">Refresh Data</button>
+    <div id="content"></div>
+
+    <script>
+        function loadData() {
+            fetch('/data')
+                .then(res => res.json())
+                .then(data => {
+                    const container = document.getElementById('content');
+                    container.innerHTML = '';
+                    data.forEach(item => {
+                        const div = document.createElement('div');
+                        div.innerHTML = `
+                            <h2>${item.heading}</h2>
+                            ${item.image ? `<img src="${item.image}" width="200" />` : ''}
+                            <p>${item.text}</p>
+                            <hr />
+                        `;
+                        container.appendChild(div);
+                    });
+                });
+        }
+
+        // Load data on page load
+        loadData();
+    </script>
+</body>
+</html>

@@ -1,11 +1,20 @@
 import pandas as pd
 import numpy as np
 from fastapi import FastAPI, UploadFile
-from qdrant import QdrantStore
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+from .qdrant import QdrantStore
 
 
 app = FastAPI()
 store = QdrantStore("documents", use_semantic_chunking=True)
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+
+@app.get("/")
+async def read_root():
+    return FileResponse("static/index.html")
 
 
 @app.post("/upload-excel")
