@@ -1,6 +1,6 @@
 import pandas as pd
 from fastapi import FastAPI, UploadFile
-from qdrant_store import QdrantStore
+from qdrant import QdrantStore
 
 
 app = FastAPI()
