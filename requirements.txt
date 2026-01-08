@@ -1,2 +1,6 @@
-qdrant_client
+qdrant-client
+pandas
+openpyxl
+fastapi
+uvicorn
 sentence-transformers
