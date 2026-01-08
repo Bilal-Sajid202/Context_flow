@@ -26,24 +26,19 @@ class QdrantStore:
         sentences = text.split('.')
         return [s.strip() for s in sentences if s.strip()]
 
-    def add_json(self, data: dict):
+    def add_record(self, heading: str, text: str, image=None):
         """
-        Expects JSON format:
-        {
-        "heading": str,
-        "text": str,
-        "image": str | None
-        }
+        Add a record with heading, text, and optional image.
         """
-        chunks = self._chunk_text(data["text"])
+        chunks = self._chunk_text(text)
         points = []
 
         for chunk in chunks:
             vector = self.model.encode(chunk).tolist()
             payload = {
-                "heading": data["heading"],
+                "heading": heading,
                 "text": chunk,
-                "image": data.get("image")
+                "image": image
             }
 
             points.append(
