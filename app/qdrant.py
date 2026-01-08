@@ -56,3 +56,17 @@ class QdrantStore:
             collection_name=self.collection_name,
             limit=100
         )[0]
+
+    def search(self, query: str, limit: int = 5):
+        """
+        Search for documents similar to the query.
+        """
+        vector = self.model.encode(query).tolist()
+        
+        search_result = self.client.search(
+            collection_name=self.collection_name,
+            query_vector=vector,
+            limit=limit
+        )
+        
+        return search_result

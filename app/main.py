@@ -38,3 +38,15 @@ def upload_excel(file: UploadFile):
 def get_data():
     points = store.get_all()
     return [p.payload for p in points]
+
+
+@app.get("/query")
+def query_data(q: str):
+    results = store.search(q)
+    return [
+        {
+            "score": result.score,
+            "payload": result.payload
+        }
+        for result in results
+    ]
