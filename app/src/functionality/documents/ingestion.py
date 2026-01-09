@@ -30,13 +30,3 @@ def retrieve_all_documents():
     points = store.get_all()
     # Safely handle payload (ensure it's not None)
     return [p.payload for p in points if p.payload]
-
-def search_documents_logic(query: str):
-    results = store.search(query)
-    return [
-        {
-            "score": result.score,
-            "payload": result.payload
-        }
-        for result in results
-    ]
